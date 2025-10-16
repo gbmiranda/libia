@@ -42,6 +42,8 @@ export const IconName = {
   Star: 'Star',
   Plus: 'Plus',
   X: 'X',
+  Check: 'Check',
+  Minus: 'Minus',
   Send: 'Send',
   Download: 'Download',
   Settings: 'Settings',
@@ -74,6 +76,17 @@ export const IconName = {
   // Loading
   Loader2: 'Loader2',
   Loader: 'Loader',
+
+  // Input-specific icons
+  Eye: 'Eye',
+  EyeOff: 'EyeOff',
+  Search: 'Search',
+  Mail: 'Mail',
+  Lock: 'Lock',
+  User: 'User',
+  AlertCircle: 'AlertCircle',
+  DollarSign: 'DollarSign',
+  Calendar: 'Calendar',
 } as const;
 
 /**
@@ -96,6 +109,8 @@ const iconComponentMap: Record<IconName, React.ComponentType<any>> = {
   Star: LucideIcons.Star,
   Plus: LucideIcons.Plus,
   X: LucideIcons.X,
+  Check: LucideIcons.Check,
+  Minus: LucideIcons.Minus,
   Send: LucideIcons.Send,
   Download: LucideIcons.Download,
   Settings: LucideIcons.Settings,
@@ -128,6 +143,17 @@ const iconComponentMap: Record<IconName, React.ComponentType<any>> = {
   // Loading
   Loader2: LucideIcons.Loader2,
   Loader: LucideIcons.Loader,
+
+  // Input-specific icons
+  Eye: LucideIcons.Eye,
+  EyeOff: LucideIcons.EyeOff,
+  Search: LucideIcons.Search,
+  Mail: LucideIcons.Mail,
+  Lock: LucideIcons.Lock,
+  User: LucideIcons.User,
+  AlertCircle: LucideIcons.AlertCircle,
+  DollarSign: LucideIcons.DollarSign,
+  Calendar: LucideIcons.Calendar,
 };
 
 /**

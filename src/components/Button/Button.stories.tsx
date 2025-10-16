@@ -53,10 +53,6 @@ const meta = {
       options: Object.values(IconName),
       description: 'Icon to display after the button text',
     },
-    ripple: {
-      control: 'boolean',
-      description: 'Enable ripple effect on click',
-    },
   },
 } satisfies Meta<typeof Button>;
 
@@ -70,6 +66,5 @@ export const Default: Story = {
     size: 'md',
     leftIcon: Icons.Sparkles,
     label: 'Customize Me!',
-    ripple: true,
   },
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '../../lib/utils';
 import { type SpacingScale, type ComponentSize, type Variant, type Shape, marginClasses, iconSizes } from '../../tokens';
 import { type IconName, Icons, renderIcon } from '../../icons';
@@ -28,11 +28,6 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
    * Loading state
    */
   loading?: boolean;
-
-  /**
-   * Enable ripple effect on click
-   */
-  ripple?: boolean;
 
   /**
    * Shape of the button
@@ -112,12 +107,6 @@ const shapeStyles = {
 const disabledStyles =
   'disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none disabled:hover:translate-y-0 disabled:hover:scale-100';
 
-interface RippleEffect {
-  x: number;
-  y: number;
-  id: number;
-}
-
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     {
@@ -126,7 +115,6 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       variant = 'primary',
       size = 'md',
       loading = false,
-      ripple = true,
       shape = 'circle',
       tooltip,
       marginTop,
@@ -143,28 +131,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     },
     ref
   ) => {
-    const [ripples, setRipples] = useState<RippleEffect[]>([]);
-
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (ripple && !disabled && !loading) {
-        const button = e.currentTarget;
-        const rect = button.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const newRipple: RippleEffect = {
-          x,
-          y,
-          id: Date.now(),
-        };
-
-        setRipples(prev => [...prev, newRipple]);
-
-        setTimeout(() => {
-          setRipples(prev => prev.filter(r => r.id !== newRipple.id));
-        }, 600);
-      }
-
       onClick?.(e);
     };
 
@@ -176,7 +143,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         aria-label={ariaLabel}
         title={tooltip}
         className={cn(
-          'relative inline-flex items-center justify-center font-semibold overflow-hidden',
+          'relative inline-flex items-center justify-center font-semibold',
           'focus:outline-none focus:ring-4 focus:ring-ai-primary-500/30 focus:ring-offset-2',
           'transform transition-all duration-300 active:scale-[0.95] hover:-translate-y-0.5',
           'select-none',
@@ -196,21 +163,6 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         )}
         {...props}
       >
-        {/* Ripple Effect */}
-        {ripples.map(ripple => (
-          <span
-            key={ripple.id}
-            className="absolute bg-white/30 rounded-full animate-ripple pointer-events-none"
-            style={{
-              left: ripple.x,
-              top: ripple.y,
-              width: 10,
-              height: 10,
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-        ))}
-
         {/* Content */}
         <span className="relative z-10 flex items-center justify-center">
           {loading ? (

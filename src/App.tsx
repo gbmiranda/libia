@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ThemeToggle } from './components';
+import { Button } from './components';
 import { Icons } from './icons';
 import { Sparkles, Cpu, Zap, Star } from 'lucide-react';
 import './App.css';
@@ -15,11 +15,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-950 transition-colors duration-300">
-      {/* Theme Toggle - Fixed position */}
-      <div className="fixed top-6 right-6 z-50">
-        <ThemeToggle size="lg" />
-      </div>
-
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-500/20 dark:to-purple-500/20" />

@@ -44,10 +44,6 @@ const meta = {
       control: 'boolean',
       description: 'Disabled state',
     },
-    ripple: {
-      control: 'boolean',
-      description: 'Enable ripple effect on click',
-    },
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -64,7 +60,6 @@ export const Default: Story = {
     shape: 'circle',
     loading: false,
     disabled: false,
-    ripple: true,
     tooltip: 'Click to like',
   },
 };
