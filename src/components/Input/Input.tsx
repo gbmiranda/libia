@@ -75,6 +75,11 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   fullWidth?: boolean;
 
   /**
+   * Required field indicator
+   */
+  required?: boolean;
+
+  /**
    * Margin top spacing
    */
   marginTop?: SpacingScale;
@@ -257,6 +262,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       fullWidth = false,
       disabled = false,
+      required = false,
       marginTop,
       marginBottom,
       marginLeft,
@@ -264,7 +270,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       margin,
       marginVertical,
       marginHorizontal,
-      align = 'center',
+      align = 'left',
       className,
       id,
       type = 'text',
@@ -399,6 +405,66 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     }, [type, showDatePicker]);
 
+    // Calculate date picker position
+    const calculatePickerPosition = () => {
+      if (inputRef.current) {
+        const rect = inputRef.current.getBoundingClientRect();
+        setPickerPosition({
+          top: rect.bottom + 8,
+          left: rect.left,
+          width: rect.width,
+        });
+      }
+    };
+
+    // Update date picker position on scroll/resize with smooth performance
+    useEffect(() => {
+      if (type === 'date' && showDatePicker) {
+        let rafId: number | null = null;
+
+        const handleScroll = (e: Event) => {
+          // Don't update if scrolling inside the date picker itself
+          const target = e.target as Node;
+          const pickerElement = document.querySelector('[data-datepicker]');
+          if (pickerElement && pickerElement.contains(target)) {
+            return;
+          }
+
+          // Use requestAnimationFrame for smooth updates
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+          }
+
+          rafId = requestAnimationFrame(() => {
+            calculatePickerPosition();
+            rafId = null;
+          });
+        };
+
+        const handleResize = () => {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+          }
+
+          rafId = requestAnimationFrame(() => {
+            calculatePickerPosition();
+            rafId = null;
+          });
+        };
+
+        window.addEventListener('scroll', handleScroll, true);
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+          }
+          window.removeEventListener('scroll', handleScroll, true);
+          window.removeEventListener('resize', handleResize);
+        };
+      }
+    }, [type, showDatePicker]);
+
     // Determine state classes
     const hasError = Boolean(error);
     const stateClasses = hasError
@@ -480,20 +546,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     // Toggle date picker and calculate position
     const handleToggleDatePicker = () => {
-      if (!showDatePicker && inputRef.current) {
-        const rect = inputRef.current.getBoundingClientRect();
-        setPickerPosition({
-          top: rect.bottom + window.scrollY + 8, // 8px gap
-          left: rect.left + window.scrollX,
-          width: rect.width,
-        });
+      if (!showDatePicker) {
+        calculatePickerPosition();
       }
       setShowDatePicker(!showDatePicker);
     };
 
     // Create input element structure
     const inputElement = (
-      <>
+      <div className="text-left">
         {/* Label */}
         {label && (
           <label
@@ -505,6 +566,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}
           >
             {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
 
@@ -546,6 +608,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             value={type === 'currency' || type === 'date' ? displayValue : currentValue}
             onChange={handleChange}
             disabled={disabled}
+            required={required}
             placeholder={type === 'date' ? 'DD/MM/AAAA' : props.placeholder}
             maxLength={type === 'date' ? 10 : undefined}
             aria-describedby={error ? errorId : helperText ? helperTextId : undefined}
@@ -639,7 +702,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {helperText}
           </p>
         )}
-      </>
+      </div>
     );
 
     // If fullWidth is true, return element directly without wrapper
@@ -651,7 +714,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={cn(
-          'flex',
+          'flex items-start',
           alignClasses[align],
           margin && marginClasses.all[margin],
           !margin && marginVertical && marginClasses.vertical[marginVertical],

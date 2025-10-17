@@ -53,6 +53,8 @@ export const IconName = {
   ArrowLeft: 'ArrowLeft',
   ArrowUp: 'ArrowUp',
   ArrowDown: 'ArrowDown',
+  ChevronDown: 'ChevronDown',
+  ChevronUp: 'ChevronUp',
 
   // Navigation icons
   Play: 'Play',
@@ -120,6 +122,8 @@ const iconComponentMap: Record<IconName, React.ComponentType<any>> = {
   ArrowLeft: LucideIcons.ArrowLeft,
   ArrowUp: LucideIcons.ArrowUp,
   ArrowDown: LucideIcons.ArrowDown,
+  ChevronDown: LucideIcons.ChevronDown,
+  ChevronUp: LucideIcons.ChevronUp,
 
   // Navigation icons
   Play: LucideIcons.Play,

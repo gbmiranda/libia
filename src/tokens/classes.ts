@@ -76,9 +76,10 @@ export const paddingClasses = {
 /**
  * Alignment classes
  * Maps alignment values to Tailwind CSS classes
+ * Controls only horizontal positioning (justify), not text alignment
  */
 export const alignClasses: Record<Align, string> = {
-  left: 'text-left justify-start',
-  center: 'text-center justify-center',
-  right: 'text-right justify-end',
+  left: 'justify-start',
+  center: 'justify-center',
+  right: 'justify-end',
 } as const;
