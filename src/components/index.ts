@@ -24,3 +24,6 @@ export type { ProgressProps } from './Progress/Progress.types';
 
 export { Slider } from './Slider';
 export type { SliderProps } from './Slider';
+
+export { Textarea } from './Textarea';
+export type { TextareaProps } from './Textarea';
